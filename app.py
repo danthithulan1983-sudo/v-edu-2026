@@ -132,6 +132,41 @@ def teacher_dashboard():
         st.bar_chart(diem_so.value_counts().sort_index())
         st.dataframe(df_p)
     else:
+        import streamlit as st
+
+st.header("🤖 Trợ lý Vật lý ảo - V-Edu 2026")
+st.caption("Hỗ trợ giải đáp kiến thức và hướng dẫn tư duy Vật lý")
+
+# 1. Khởi tạo bộ nhớ tạm (Session State) để lưu lịch sử chat
+if "messages" not in st.session_state:
+    # Câu chào mặc định của Bot
+    st.session_state.messages = [
+        {"role": "assistant", "content": "Chào em! Cô là trợ lý ảo của V-Edu. Em đang gặp khó khăn ở chuyên đề Vật lý nào?"}
+    ]
+
+# 2. Hiển thị lại các tin nhắn cũ trên màn hình
+for message in st.session_state.messages:
+    with st.chat_message(message["role"]):
+        st.markdown(message["content"])
+
+# 3. Tạo ô nhập dữ liệu cho học sinh
+if prompt := st.chat_input("Nhập câu hỏi Vật lý của em vào đây (VD: Cô hướng dẫn em bài giao thoa sóng)..."):
+    
+    # Hiển thị tin nhắn của học sinh lên màn hình
+    with st.chat_message("user"):
+        st.markdown(prompt)
+    
+    # Lưu tin nhắn của học sinh vào bộ nhớ
+    st.session_state.messages.append({"role": "user", "content": prompt})
+
+    # 4. Bot phản hồi (Tạm thời là phản hồi mẫu, sau này sẽ ghép AI vào đây)
+    phan_hoi_mau = f"Cô đã nhận được câu hỏi của em về: '{prompt}'. Hệ thống AI đang được tích hợp và sẽ sớm giải đáp chi tiết cho em nhé!"
+    
+    with st.chat_message("assistant"):
+        st.markdown(phan_hoi_mau)
+        
+    # Lưu câu trả lời của Bot vào bộ nhớ
+    st.session_state.messages.append({"role": "assistant", "content": phan_hoi_mau})
         st.write("Chưa có học sinh nào nộp bài.")
 
 # ĐIỀU HƯỚNG
